@@ -1,0 +1,58 @@
+<div class="form-container">
+  <form class="centered-form" [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+    <h2>{{ isEdit ? 'Edit Order' : 'Add Order' }}</h2>
+    <div>
+      <label>Customer Name</label>
+      <input formControlName="customerName" type="text" />
+      <div *ngIf="orderForm.get('customerName')?.invalid && orderForm.get('customerName')?.touched" style="color:red;">Customer name is required</div>
+    </div>
+    <div>
+      <label>Phone</label>
+      <input formControlName="customerPhone" type="text" />
+      <div *ngIf="orderForm.get('customerPhone')?.invalid && orderForm.get('customerPhone')?.touched" style="color:red;">Phone is required</div>
+    </div>
+    <div>
+      <label>Address</label>
+      <input formControlName="customerAddress" type="text" />
+      <div *ngIf="orderForm.get('customerAddress')?.invalid && orderForm.get('customerAddress')?.touched" style="color:red;">Address is required</div>
+    </div>
+    <div>
+      <label>Product</label>
+      <select formControlName="productId">
+        <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Service Engineer</label>
+      <select formControlName="assignedEngineerId">
+        <option *ngFor="let engineer of engineers" [value]="engineer.id">{{ engineer.name }}</option>
+      </select>
+    </div>
+    <div>
+      <label>Priority</label>
+      <select formControlName="priority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <div>
+      <label>Description</label>
+      <textarea formControlName="description"></textarea>
+      <div *ngIf="orderForm.get('description')?.invalid && orderForm.get('description')?.touched" style="color:red;">Description is required</div>
+    </div>
+    <div *ngIf="isEdit">
+      <label>Status</label>
+      <select formControlName="status">
+        <option value="Pending">Pending</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div>
+      <button type="submit" [disabled]="orderForm.invalid">Save</button>
+      <button type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>

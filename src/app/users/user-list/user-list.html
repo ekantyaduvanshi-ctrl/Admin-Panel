@@ -1,0 +1,30 @@
+<div class="user-list-container">
+  <div class="user-list-header">
+    <input class="search-bar" type="text" placeholder="Search users..." [(ngModel)]="searchTerm" (input)="onSearch()" />
+    <button class="add-user-btn" (click)="addUser()">Add User</button>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Sr No</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Role</th>
+          <th>Service</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.password ? '******' : '' }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="settings-container">
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="settings-form">
+    <h2>Profile Settings</h2>
+    <div class="form-fields-row">
+      <div>
+        <label>Name</label>
+        <input formControlName="name" type="text" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input formControlName="email" type="email" />
+      </div>
+    </div>
+    <div class="form-fields-row">
+      <div>
+        <label>Phone</label>
+        <input formControlName="phone" type="tel" />
+      </div>
+      <div>
+        <label>Address</label>
+        <input formControlName="address" type="text" />
+      </div>
+    </div>
+    <div class="form-fields-row">
+      <div>
+        <label>Profile Image URL</label>
+        <input formControlName="profileImage" type="text" />
+      </div>
+      <div></div>
+    </div>
+    <div class="settings-btn-row">
+      <button type="submit" [disabled]="profileForm.invalid">Save Changes</button>
+    </div>
+  </form>
+</div> 

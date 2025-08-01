@@ -1,0 +1,255 @@
+<div class="dashboard-bg" style="background-image: url('/assets/images/Dashboard.jpg'); background-repeat: no-repeat; background-position: center center; background-size: cover; opacity: 0.3;"></div>
+<div class="dashboard-blur-overlay"></div>
+<div class="dashboard-root">
+  <header class="dashboard-header">
+    <button class="sidebar-toggle-btn" (click)="sidebarOpen = !sidebarOpen">
+      <span class="material-icons">more_vert</span>
+    </button>
+    <div class="user-info">
+      <span>{{ user?.name }} ({{ user?.role }})</span>
+    </div>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </header>
+  <div class="dashboard-body">
+    <aside class="dashboard-sidebar" [class.closed]="!sidebarOpen">
+      <div class="sidebar-profile">
+        <img class="profile-img" [src]="user?.profileImage || 'https://ui-avatars.com/api/?name=' + (user?.name || 'User')" alt="Profile" />
+        <div class="profile-info">
+          <div class="profile-name">{{ user?.name }}</div>
+          <div class="profile-role">{{ user?.role }}</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a class="sidebar-link-btn" (click)="selectSection('dashboard')" role="button">Dashboard</a></li>
+          <li *ngIf="isSuperAdmin"><a class="sidebar-link-btn" (click)="selectSection('orders')" role="button">Orders</a></li>
+          <li *ngIf="isSuperAdmin"><a class="sidebar-link-btn" (click)="selectSection('products')" role="button">Products</a></li>
+          <li *ngIf="isSuperAdmin"><a class="sidebar-link-btn" (click)="selectSection('users')" role="button">Users</a></li>
+          <li *ngIf="user?.role === 'Service Engineer'"><a class="sidebar-link-btn" (click)="selectSection('orders')" role="button">Orders</a></li>
+        </ul>
+      </nav>
+      <div class="sidebar-settings">
+        <button class="settings-btn" (click)="goToSettings()">
+          <span class="material-icons">settings</span> Settings
+        </button>
+      </div>
+    </aside>
+    <main class="dashboard-main">
+      <div class="dashboard-content" *ngIf="selectedSection === 'dashboard'">
+        <h3>Welcome to the Admin Panel Dashboard!</h3>
+        
+        <div class="company-info">
+          <img class="company-logo" src="https://www.infocom.co.in/images/logo.png" alt="Infocom Limited Logo" />
+          <div class="company-description">
+            <h2>Infocom Private Limited</h2>
+            <p>
+              Infocom Private Limited is a leading provider of IT services, offering innovative technology solutions to businesses worldwide. Our expertise spans software development, cloud computing, cybersecurity, IT consulting, and digital transformation. We empower organizations to achieve their goals through reliable, secure, and scalable IT infrastructure and services.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Cards - Outside Admin Container -->
+      <div class="dashboard-stats" *ngIf="selectedSection === 'dashboard'">
+        <div class="stat-card">
+          <h3>Total Orders</h3>
+          <p>{{ stats.totalOrders }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Products</h3>
+          <p>{{ stats.totalProducts }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Total Users</h3>
+          <p>{{ stats.totalUsers }}</p>
+        </div>
+      </div>
+      <div *ngIf="selectedSection === 'orders'">
+        <div class="order-list-container">
+          <div class="order-list-header">
+            <input type="text" placeholder="Search orders..." [(ngModel)]="searchTerm" (input)="onSearch()" />
+            <button *ngIf="isSuperAdmin" (click)="addOrder()">Add Order</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Date of Order</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of filteredOrders">
+                <td>{{ order.productName }}</td>
+                <td>{{ order.createdDate | date:'short' }}</td>
+                <td>
+                  <span *ngIf="isSuperAdmin">{{ order.status }}</span>
+                  <select *ngIf="!isSuperAdmin" [(ngModel)]="order.status" (change)="updateStatus(order)">
+                    <option value="Pending">Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf="selectedSection === 'products'">
+        <div class="products-page-container">
+          <div class="products-header-row">
+            <h2 class="products-title">Products</h2>
+            <button class="add-product-toggle-btn" (click)="toggleAddProductForm()">Add Product</button>
+          </div>
+          <form *ngIf="showAddProductForm" class="add-product-form" #productForm="ngForm" (ngSubmit)="addNewProduct()">
+            <div class="form-fields-row">
+              <div>
+                <input name="name" [(ngModel)]="newProduct.name" type="text" placeholder="Product Name" required />
+              </div>
+              <div>
+                <input name="price" [(ngModel)]="newProduct.price" type="number" placeholder="Price" required min="0" />
+              </div>
+              <div>
+                <input name="category" [(ngModel)]="newProduct.category" type="text" placeholder="Category" required />
+              </div>
+            </div>
+            <div class="form-fields-row">
+              <div>
+                <input name="imageUrl" [(ngModel)]="newProduct.imageUrl" type="text" placeholder="Image URL" required />
+              </div>
+              <div>
+                <select name="status" [(ngModel)]="newProduct.status" required>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div>
+                <input name="description" [(ngModel)]="newProduct.description" type="text" placeholder="Description" required />
+              </div>
+            </div>
+            <div class="add-product-btn-row">
+              <button type="submit" [disabled]="productForm.invalid">Add Product</button>
+            </div>
+          </form>
+          <div class="products-grid">
+            <div class="product-card" *ngFor="let product of products">
+              <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-image" />
+              <div class="product-info">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <p><strong>Price:</strong> ${{ product.price }}</p>
+                <p><strong>Category:</strong> {{ product.category }}</p>
+                <p><strong>Status:</strong> {{ product.status }}</p>
+              </div>
+              <div class="product-actions">
+                <button (click)="removeFromCart(product)">-</button>
+                <span>{{ cart[product.id] ? cart[product.id].quantity : 0 }}</span>
+                <button (click)="addToCart(product)">+</button>
+              </div>
+            </div>
+          </div>
+          <div class="cart-section" *ngIf="cartItems.length > 0">
+            <h3>Your Cart</h3>
+            <div class="cart-items">
+              <div class="cart-item" *ngFor="let item of cartItems">
+                <span>{{ item.product.name }}</span>
+                <span>x{{ item.quantity }}</span>
+                <span>${{ item.product.price * item.quantity }}</span>
+              </div>
+            </div>
+            <div class="cart-total-row">
+              <span style="font-weight:700;">Total:</span>
+              <span style="font-weight:700;">${{ getCartTotal() }}</span>
+            </div>
+          </div>
+          <footer class="cart-footer" *ngIf="cartItems.length > 0">
+            <button class="proceed-btn" (click)="proceedToCheckout()">Proceed</button>
+          </footer>
+          <div class="address-modal" *ngIf="showAddressModal">
+            <div class="address-modal-content">
+              <h3>Enter Address Details</h3>
+              <label>Billing Address</label>
+              <input [(ngModel)]="billingAddress" type="text" placeholder="Billing Address" />
+              <label>Delivery Address</label>
+              <input [(ngModel)]="deliveryAddress" type="text" placeholder="Delivery Address" />
+              <div class="address-modal-actions">
+                <button (click)="submitAddress()">Submit</button>
+                <button (click)="closeModal()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedSection === 'users'">
+        <div class="user-list-container">
+          <div class="user-list-header">
+            <input class="search-bar" type="text" placeholder="Search users..." [(ngModel)]="searchUserTerm" (input)="onUserSearch()" />
+            <button class="add-user-btn" (click)="addUser()">Add User</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sr No</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Password</th>
+                  <th>Role</th>
+                  <th>Service</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of filteredUsers; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.password ? '******' : '' }}</td>
+                  <td>{{ user.role }}</td>
+                  <td>{{ user.status }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedSection === 'settings'">
+        <div class="settings-container">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="settings-form">
+            <h2>Profile Settings</h2>
+            <div class="form-fields-row">
+              <div>
+                <label>Name</label>
+                <input formControlName="name" type="text" />
+              </div>
+              <div>
+                <label>Email</label>
+                <input formControlName="email" type="email" />
+              </div>
+            </div>
+            <div class="form-fields-row">
+              <div>
+                <label>Phone</label>
+                <input formControlName="phone" type="tel" />
+              </div>
+              <div>
+                <label>Address</label>
+                <input formControlName="address" type="text" />
+              </div>
+            </div>
+            <div class="form-fields-row">
+              <div>
+                <label>Profile Image URL</label>
+                <input formControlName="profileImage" type="text" />
+              </div>
+              <div></div>
+            </div>
+            <div class="settings-btn-row">
+              <button type="submit" [disabled]="profileForm.invalid">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

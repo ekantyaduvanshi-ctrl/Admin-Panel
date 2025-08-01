@@ -1,0 +1,35 @@
+<div class="order-history-container">
+  <h2>Order History</h2>
+  <table class="order-history-table">
+    <thead>
+      <tr>
+        <th>User Email</th>
+        <th>Purchased Product</th>
+        <th>Product ID</th>
+        <th>Order ID</th>
+        <th>Quantity</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let order of orders; let i = index">
+        <ng-container *ngFor="let item of order.items; let j = index">
+          <tr>
+            <td>{{ user.email }}</td>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.id }}</td>
+            <td>{{ order.id }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.product.price * item.quantity }}</td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="5" style="text-align:right;font-weight:700;">Total Amount Spent:</td>
+        <td style="font-weight:700;">${{ getTotalSpent() }}</td>
+      </tr>
+    </tfoot>
+  </table>
+</div> 

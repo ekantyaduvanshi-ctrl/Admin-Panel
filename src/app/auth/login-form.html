@@ -1,0 +1,33 @@
+<div class="login-bg d-flex align-items-center justify-content-center min-vh-100">
+  <div class="login-card position-relative d-flex flex-column">
+    <div class="avatar-container-overlap">
+      <div class="avatar-icon-overlap">
+        <i class="fas fa-user"></i>
+      </div>
+    </div>
+    <form (ngSubmit)="onSubmit($event)" autocomplete="off" class="flex-grow-0">
+      <div class="mb-3">
+        <label for="email" class="form-label login-label">Email :</label>
+        <input id="email" name="email" type="email" class="form-control login-input" [(ngModel)]="email" required autocomplete="username">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label login-label">Password :</label>
+        <input id="password" name="password" type="password" class="form-control login-input" [(ngModel)]="password" required autocomplete="current-password">
+        <div class="forget-link-row text-end mt-1">
+          <a href="#" class="forget-link">Forget Password ?</a>
+        </div>
+      </div>
+      <div *ngIf="error" class="alert alert-danger py-1 text-center">{{ error }}</div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn login-btn mt-2 px-5" [disabled]="loading">
+          <span *ngIf="!loading">Login</span>
+          <span *ngIf="loading">Logging in...</span>
+        </button>
+      </div>
+    </form>
+    <div class="text-center signup-row">
+      <span>Don’t have an account ?</span>
+      <a routerLink="/signup" class="signup-link">Sign Up</a> here.
+    </div>
+  </div>
+</div> 

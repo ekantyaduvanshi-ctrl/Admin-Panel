@@ -1,0 +1,86 @@
+<div class="products-bg" style="background-image: url('/assets/images/Product.jpg'); background-repeat: no-repeat; background-position: center center; background-size: cover; opacity: 0.3;"></div>
+<div class="products-page-container">
+  <div class="products-header-row">
+    <h2 class="products-title">Products</h2>
+    <button class="add-product-toggle-btn" (click)="toggleAddProductForm()">Add Product</button>
+  </div>
+  <form *ngIf="showAddProductForm" class="add-product-form" #productForm="ngForm" (ngSubmit)="addNewProduct()">
+    <div class="form-fields-row">
+      <div>
+        <input name="name" [(ngModel)]="newProduct.name" type="text" placeholder="Product Name" required />
+      </div>
+      <div>
+        <input name="price" [(ngModel)]="newProduct.price" type="number" placeholder="Price" required min="0" />
+      </div>
+      <div>
+        <input name="category" [(ngModel)]="newProduct.category" type="text" placeholder="Category" required />
+      </div>
+    </div>
+    <div class="form-fields-row">
+      <div>
+        <input name="imageUrl" [(ngModel)]="newProduct.imageUrl" type="text" placeholder="Image URL" required />
+      </div>
+      <div>
+        <select name="status" [(ngModel)]="newProduct.status" required>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+      <div>
+        <input name="description" [(ngModel)]="newProduct.description" type="text" placeholder="Description" required />
+      </div>
+    </div>
+    <div class="add-product-btn-row">
+      <button type="submit" [disabled]="productForm.invalid">Add Product</button>
+    </div>
+  </form>
+  <div class="products-grid">
+    <div class="product-card" *ngFor="let product of products">
+      <div class="product-info">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description }}</p>
+        <p><strong>Price:</strong> ${{ product.price }}</p>
+        <p><strong>Category:</strong> {{ product.category }}</p>
+        <p><strong>Status:</strong> {{ product.status }}</p>
+      </div>
+      <div class="product-actions">
+        <button (click)="removeFromCart(product)">-</button>
+        <span>{{ cart[product.id] ? cart[product.id].quantity : 0 }}</span>
+        <button (click)="addToCart(product)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-section" *ngIf="cartItems.length > 0">
+    <h3>Your Cart</h3>
+    <div class="cart-items">
+      <div class="cart-item" *ngFor="let item of cartItems">
+        <span>{{ item.product.name }}</span>
+        <span>x{{ item.quantity }}</span>
+        <span>${{ item.product.price * item.quantity }}</span>
+      </div>
+    </div>
+    <div class="cart-total-row">
+      <span style="font-weight:700;">Total:</span>
+      <span style="font-weight:700;">${{ getCartTotal() }}</span>
+    </div>
+  </div>
+
+  <footer class="cart-footer" *ngIf="cartItems.length > 0">
+    <button class="proceed-btn" (click)="proceedToCheckout()">Proceed</button>
+  </footer>
+
+  <div class="address-modal" *ngIf="showAddressModal">
+    <div class="address-modal-content">
+      <h3>Enter Address Details</h3>
+      <label>Billing Address</label>
+      <input [(ngModel)]="billingAddress" type="text" placeholder="Billing Address" />
+      <label>Delivery Address</label>
+      <input [(ngModel)]="deliveryAddress" type="text" placeholder="Delivery Address" />
+      <div class="address-modal-actions">
+        <button (click)="submitAddress()">Submit</button>
+        <button (click)="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div> 

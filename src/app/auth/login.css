@@ -1,0 +1,146 @@
+.main-header {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  z-index: 1000;
+}
+
+.main-header .btn-primary {
+  margin-left: auto;
+  align-self: center;
+}
+.company-name {
+  font-weight: 700;
+  color: #1976d2;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+.header-info {
+  font-size: 5rem;
+  font-weight: 400;
+}
+.btn-primary {
+  background-color: #1976d2;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.15);
+}
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 120px;
+}
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.hero-title {
+  color: #ffffff;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.hero-text {
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 140px;
+}
+
+.stat-number {
+  color: #ffed4e;
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+}
+
+.stat-label {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+.z-3 {
+  z-index: 3;
+}
+.bg-light {
+  background-color: #f8f9fa !important;
+}
+.card {
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.card-title {
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+.form-label {
+  font-weight: 500;
+}
+.form-control:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.15);
+}
+.alert {
+  font-size: 0.97rem;
+}
+.main-footer {
+  background: #343a40;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+  margin-top: 0;
+  border-top: 3px solid #ffed4e;
+  z-index: 9999;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+.main-footer .btn {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.social-links a {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.social-links a:hover {
+  color: #1976d2 !important;
+}
+
+.address-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

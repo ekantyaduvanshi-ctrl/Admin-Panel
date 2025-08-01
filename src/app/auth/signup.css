@@ -1,0 +1,45 @@
+.card {
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+}
+.card-title {
+  font-weight: 700;
+  font-size: 1.6rem;
+}
+.form-label {
+  font-weight: 500;
+}
+.form-control:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.15);
+}
+.btn-primary {
+  background-color: #1976d2;
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.15);
+}
+.alert {
+  font-size: 0.97rem;
+}
+.auth-footer {
+  z-index: 1050;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+}
+.container {
+  padding-bottom: 80px;
+}
+
+.auth-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.auth-avatar img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+} 

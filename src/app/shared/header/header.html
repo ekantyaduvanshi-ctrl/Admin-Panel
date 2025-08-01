@@ -1,0 +1,6 @@
+<header class="header">
+  <div class="user-info">
+    <span *ngIf="user">Logged in as: {{ user.email }} ({{ user.role }})</span>
+  </div>
+  <button (click)="logout()">Logout</button>
+</header>

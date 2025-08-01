@@ -1,0 +1,41 @@
+<div class="form-container">
+  <form class="centered-form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <h2>{{ isEdit ? 'Edit Product' : 'Add Product' }}</h2>
+    <div>
+      <label>Name</label>
+      <input formControlName="name" type="text" />
+      <div *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched" style="color:red;">Name is required</div>
+    </div>
+    <div>
+      <label>Description</label>
+      <textarea formControlName="description"></textarea>
+      <div *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched" style="color:red;">Description is required</div>
+    </div>
+    <div>
+      <label>Price</label>
+      <input formControlName="price" type="number" min="0" />
+      <div *ngIf="productForm.get('price')?.invalid && productForm.get('price')?.touched" style="color:red;">Price is required and must be positive</div>
+    </div>
+    <div>
+      <label>Category</label>
+      <input formControlName="category" type="text" />
+      <div *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched" style="color:red;">Category is required</div>
+    </div>
+    <div>
+      <label>Image URL</label>
+      <input formControlName="imageUrl" type="text" />
+      <div *ngIf="productForm.get('imageUrl')?.invalid && productForm.get('imageUrl')?.touched" style="color:red;">Image URL is required</div>
+    </div>
+    <div>
+      <label>Status</label>
+      <select formControlName="status">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+    <div>
+      <button type="submit" [disabled]="productForm.invalid">Save</button>
+      <button type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
