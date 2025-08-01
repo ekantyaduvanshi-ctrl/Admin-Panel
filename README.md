@@ -104,6 +104,14 @@ Password: admin123
 - `POST https://backend.cshare.in/v2/loginV2` - User login (External API)
 - `POST /api/auth/register` - User registration
 
+### Templates
+- `GET https://backend.cshare.in/v2/template/filter` - Filter templates (External API)
+- `GET /api/templates` - Get all templates
+- `POST /api/templates` - Create template
+- `GET /api/templates/:id` - Get template by ID
+- `PUT /api/templates/:id` - Update template
+- `DELETE /api/templates/:id` - Delete template
+
 ### Users
 - `GET /api/users` - Get all users
 - `POST /api/users` - Create user

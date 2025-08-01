@@ -1,0 +1,93 @@
+<div class="templates-container">
+  <div class="header">
+    <h1>📋 Templates Management</h1>
+    <p>Manage and filter your templates</p>
+  </div>
+
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <h3>🔍 Filter Templates</h3>
+    <div class="filter-form">
+      <div class="form-group">
+        <label for="template_types">Template Types:</label>
+        <input 
+          type="text" 
+          id="template_types" 
+          [(ngModel)]="filterParams.template_types" 
+          placeholder="Enter template types"
+          class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label for="from">From Date:</label>
+        <input 
+          type="date" 
+          id="from" 
+          [(ngModel)]="filterParams.from" 
+          class="form-control">
+      </div>
+      
+      <div class="form-group">
+        <label for="to">To Date:</label>
+        <input 
+          type="date" 
+          id="to" 
+          [(ngModel)]="filterParams.to" 
+          class="form-control">
+      </div>
+      
+      <div class="filter-actions">
+        <button (click)="applyFilter()" class="btn btn-primary" [disabled]="loading">
+          {{ loading ? 'Loading...' : 'Apply Filter' }}
+        </button>
+        <button (click)="clearFilter()" class="btn btn-secondary">
+          Clear Filter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">
+    <p>Loading templates...</p>
+  </div>
+
+  <!-- Templates List -->
+  <div *ngIf="!loading && templates.length > 0" class="templates-list">
+    <h3>📄 Templates ({{ templates.length }})</h3>
+    <div class="templates-grid">
+      <div *ngFor="let template of templates" class="template-card">
+        <div class="template-header">
+          <h4>{{ template.name }}</h4>
+          <span class="template-type">{{ template.type }}</span>
+        </div>
+        <div class="template-details">
+          <p><strong>Created:</strong> {{ template.created_at | date:'medium' }}</p>
+          <p><strong>Updated:</strong> {{ template.updated_at | date:'medium' }}</p>
+        </div>
+        <div class="template-actions">
+          <button class="btn btn-sm btn-primary">Edit</button>
+          <button 
+            (click)="deleteTemplate(template.id)" 
+            class="btn btn-sm btn-danger">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && templates.length === 0" class="empty-state">
+    <h3>📭 No Templates Found</h3>
+    <p>No templates match your current filter criteria.</p>
+    <button (click)="clearFilter()" class="btn btn-primary">
+      Clear Filters
+    </button>
+  </div>
+</div> 

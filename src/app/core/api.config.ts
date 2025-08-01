@@ -6,6 +6,14 @@ export const API_CONFIG = {
       REGISTER: '/auth/register',
       LOGOUT: '/auth/logout'
     },
+    TEMPLATES: {
+      FILTER: '/template/filter',
+      LIST: '/templates',
+      CREATE: '/templates',
+      UPDATE: (id: string) => `/templates/${id}`,
+      DELETE: (id: string) => `/templates/${id}`,
+      GET: (id: string) => `/templates/${id}`
+    },
     USERS: {
       LIST: '/users',
       CREATE: '/users',
