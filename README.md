@@ -106,8 +106,8 @@ Password: admin123
 
 ### Templates
 - `GET https://backend.cshare.in/v2/template/filter` - Filter templates (External API)
+- `POST https://backend.cshare.in/v2/template/create` - Create template (External API)
 - `GET /api/templates` - Get all templates
-- `POST /api/templates` - Create template
 - `GET /api/templates/:id` - Get template by ID
 - `PUT /api/templates/:id` - Update template
 - `DELETE /api/templates/:id` - Delete template

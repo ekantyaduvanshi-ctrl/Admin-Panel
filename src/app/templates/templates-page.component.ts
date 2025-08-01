@@ -60,6 +60,12 @@ export class TemplatesPageComponent implements OnInit {
     this.loadTemplates();
   }
 
+  createTemplate(): void {
+    // Navigate to template form
+    // You'll need to add routing for this
+    console.log('Navigate to template creation form');
+  }
+
   deleteTemplate(id: string): void {
     if (confirm('Are you sure you want to delete this template?')) {
       this.templateService.deleteTemplate(id)
