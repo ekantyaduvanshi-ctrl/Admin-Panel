@@ -9,8 +9,8 @@ export const API_CONFIG = {
     TEMPLATES: {
       FILTER: '/template/filter',
       CREATE: '/template/create',
+      UPDATE: '/template/update',
       LIST: '/templates',
-      UPDATE: (id: string) => `/templates/${id}`,
       DELETE: (id: string) => `/templates/${id}`,
       GET: (id: string) => `/templates/${id}`
     },

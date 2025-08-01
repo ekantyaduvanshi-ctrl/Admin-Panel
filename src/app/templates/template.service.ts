@@ -58,7 +58,7 @@ export class TemplateService {
 
   // Update template
   updateTemplate(id: string, template: Partial<Template>): Observable<Template> {
-    return this.http.put<Template>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEMPLATES.UPDATE(id)}`, template);
+    return this.http.put<Template>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TEMPLATES.UPDATE}`, { id, ...template });
   }
 
   // Delete template
