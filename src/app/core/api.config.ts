@@ -1,8 +1,8 @@
 export const API_CONFIG = {
-  BASE_URL: 'http://localhost:5000/api',
+  BASE_URL: 'https://backend.cshare.in/v2',
   ENDPOINTS: {
     AUTH: {
-      LOGIN: '/auth/login',
+      LOGIN: '/loginV2',
       REGISTER: '/auth/register',
       LOGOUT: '/auth/logout'
     },

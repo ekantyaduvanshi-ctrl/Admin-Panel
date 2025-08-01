@@ -96,10 +96,12 @@ Email: admin@company.com
 Password: admin123
 ```
 
+**Note:** The application now uses an external authentication API at `https://backend.cshare.in/v2/loginV2`
+
 ## 📡 API Endpoints
 
 ### Authentication
-- `POST /api/auth/login` - User login
+- `POST https://backend.cshare.in/v2/loginV2` - User login (External API)
 - `POST /api/auth/register` - User registration
 
 ### Users
