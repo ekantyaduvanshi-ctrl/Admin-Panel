@@ -65,5 +65,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.19.0",
+    "npm": ">=10.0.0"
+  }
 }
