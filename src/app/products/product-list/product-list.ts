@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { Product } from '../product.model';
@@ -13,23 +13,29 @@ import { DatePipe, CommonModule } from '@angular/common';
   templateUrl: './product-list.html',
   styleUrl: './product-list.css'
 })
-export class ProductList {
+export class ProductList implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   searchTerm = '';
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(private productService: ProductService, private router: Router) {}
+
+  ngOnInit() {
     this.loadProducts();
   }
 
   loadProducts() {
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+      this.filteredProducts = this.products;
+    });
   }
 
   onSearch() {
     if (this.searchTerm.trim()) {
-      this.filteredProducts = this.productService.searchProducts(this.searchTerm);
+      this.productService.searchProducts(this.searchTerm).subscribe(products => {
+        this.filteredProducts = products;
+      });
     } else {
       this.filteredProducts = this.products;
     }
@@ -45,9 +51,10 @@ export class ProductList {
 
   deleteProduct(id: number) {
     if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(id);
-      this.loadProducts();
-      this.onSearch();
+      this.productService.deleteProduct(id).subscribe(() => {
+        this.loadProducts();
+        this.onSearch();
+      });
     }
   }
 }

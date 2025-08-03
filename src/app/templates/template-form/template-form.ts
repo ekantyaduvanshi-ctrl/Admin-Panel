@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TemplateService, Template } from '../template.service';
+import { TemplateService, Template, CreateTemplateRequest } from '../template.service';
 import { SharedModule } from '../../shared/shared-module';
 
 @Component({
@@ -13,8 +13,10 @@ import { SharedModule } from '../../shared/shared-module';
   styleUrls: ['./template-form.css']
 })
 export class TemplateFormComponent {
-  template: Partial<Template> = {
+  template: CreateTemplateRequest = {
     name: '',
+    heading: '',
+    description: '',
     type: ''
   };
   
@@ -30,7 +32,7 @@ export class TemplateFormComponent {
   onSubmit(event: Event): void {
     event.preventDefault();
     
-    if (!this.template.name || !this.template.type) {
+    if (!this.template.name || !this.template.heading || !this.template.description) {
       this.error = 'Please fill in all required fields.';
       return;
     }
@@ -49,6 +51,8 @@ export class TemplateFormComponent {
           // Reset form
           this.template = {
             name: '',
+            heading: '',
+            description: '',
             type: ''
           };
           

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrderService } from '../order.service';
 import { Order } from '../order.model';
@@ -13,7 +13,7 @@ import { DatePipe, CommonModule } from '@angular/common';
   templateUrl: './order-list.html',
   styleUrl: './order-list.css'
 })
-export class OrderList {
+export class OrderList implements OnInit {
   orders: Order[] = [];
   filteredOrders: Order[] = [];
   searchTerm = '';
@@ -29,12 +29,17 @@ export class OrderList {
         this.currentEngineerId = user.id;
       }
     }
+  }
+
+  ngOnInit() {
     this.loadOrders();
   }
 
   loadOrders() {
-    this.orders = this.orderService.getOrders();
-    this.applyRoleFilter();
+    this.orderService.getOrders().subscribe(orders => {
+      this.orders = orders;
+      this.applyRoleFilter();
+    });
   }
 
   applyRoleFilter() {
@@ -72,14 +77,16 @@ export class OrderList {
 
   deleteOrder(id: number) {
     if (confirm('Are you sure you want to delete this order?')) {
-      this.orderService.deleteOrder(id);
-      this.loadOrders();
-      this.onSearch();
+      this.orderService.deleteOrder(id).subscribe(() => {
+        this.loadOrders();
+        this.onSearch();
+      });
     }
   }
 
   updateStatus(order: Order) {
-    this.orderService.updateOrder(order);
-    this.loadOrders();
+    this.orderService.updateOrder(order.id, { status: order.status }).subscribe(() => {
+      this.loadOrders();
+    });
   }
 }

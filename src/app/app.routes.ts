@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login';
 import { LoginFormComponent } from './auth/login-form';
+import { SignupComponent } from './auth/signup';
 import { Dashboard } from './dashboard';
 import { UserList } from './users/user-list/user-list';
 import { UserForm } from './users/user-form/user-form';
@@ -24,7 +25,7 @@ export const routes: Routes = [
   { path: 'users', component: UsersPageComponent, canActivate: [authGuard, roleGuard], data: { role: 'Super Admin' } },
   { path: 'users/new', component: UserForm, canActivate: [authGuard, roleGuard], data: { role: 'Super Admin' } },
   { path: 'users/:id/edit', component: UserForm, canActivate: [authGuard, roleGuard], data: { role: 'Super Admin' } },
-  { path: 'signup', component: UserForm },
+  { path: 'signup', component: SignupComponent },
   { path: 'products', component: ProductsPageComponent, canActivate: [authGuard, roleGuard], data: { role: 'Super Admin' } },
   { path: 'products/new', component: ProductForm, canActivate: [authGuard, roleGuard], data: { role: 'Super Admin' } },
   { path: 'products/:id/edit', component: ProductForm, canActivate: [authGuard, roleGuard], data: { role: 'Super Admin' } },

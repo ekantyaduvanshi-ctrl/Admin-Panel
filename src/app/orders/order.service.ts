@@ -1,75 +1,38 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Order } from './order.model';
+import { ApiService } from '../core/api.service';
+import { API_CONFIG } from '../core/api.config';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private storageKey = 'orders';
+  constructor(private apiService: ApiService) {}
 
-  constructor() {
-    // Initialize with sample orders if not present
-    if (!localStorage.getItem(this.storageKey)) {
-      const defaultOrders: Order[] = [
-        {
-          id: 1,
-          customerName: 'John Doe',
-          customerPhone: '1234567890',
-          customerAddress: '123 Main St',
-          productId: 1,
-          productName: 'Laptop',
-          assignedEngineerId: 2,
-          assignedEngineerName: 'Engineer',
-          status: 'Pending',
-          priority: 'High',
-          description: 'Setup and install',
-          createdDate: new Date(),
-          updatedDate: new Date()
-        }
-      ];
-      localStorage.setItem(this.storageKey, JSON.stringify(defaultOrders));
-    }
+  getOrders(): Observable<Order[]> {
+    return this.apiService.get<Order[]>(API_CONFIG.EXTERNAL_APIS.ORDERS.LIST);
   }
 
-  getOrders(): Order[] {
-    return JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+  getOrderById(id: number): Observable<Order> {
+    return this.apiService.get<Order>(API_CONFIG.EXTERNAL_APIS.ORDERS.GET(id.toString()));
   }
 
-  getOrderById(id: number): Order | undefined {
-    return this.getOrders().find(o => o.id === id);
+  addOrder(order: Omit<Order, 'id'>): Observable<Order> {
+    return this.apiService.post<Order>(API_CONFIG.EXTERNAL_APIS.ORDERS.CREATE, order);
   }
 
-  addOrder(order: Order): void {
-    const orders = this.getOrders();
-    order.id = orders.length ? Math.max(...orders.map(o => o.id)) + 1 : 1;
-    order.createdDate = new Date();
-    order.updatedDate = new Date();
-    orders.push(order);
-    localStorage.setItem(this.storageKey, JSON.stringify(orders));
+  updateOrder(id: number, order: Partial<Order>): Observable<Order> {
+    return this.apiService.put<Order>(API_CONFIG.EXTERNAL_APIS.ORDERS.UPDATE(id.toString()), order);
   }
 
-  updateOrder(order: Order): void {
-    const orders = this.getOrders();
-    const idx = orders.findIndex(o => o.id === order.id);
-    if (idx > -1) {
-      order.updatedDate = new Date();
-      orders[idx] = { ...order };
-      localStorage.setItem(this.storageKey, JSON.stringify(orders));
-    }
+  deleteOrder(id: number): Observable<any> {
+    return this.apiService.delete<any>(API_CONFIG.EXTERNAL_APIS.ORDERS.DELETE(id.toString()));
   }
 
-  deleteOrder(id: number): void {
-    let orders = this.getOrders();
-    orders = orders.filter(o => o.id !== id);
-    localStorage.setItem(this.storageKey, JSON.stringify(orders));
+  searchOrders(term: string): Observable<Order[]> {
+    return this.apiService.get<Order[]>(`${API_CONFIG.EXTERNAL_APIS.ORDERS.LIST}?search=${term}`);
   }
 
-  searchOrders(term: string): Order[] {
-    const lower = term.toLowerCase();
-    return this.getOrders().filter(o =>
-      o.customerName.toLowerCase().includes(lower) ||
-      o.productName.toLowerCase().includes(lower) ||
-      o.assignedEngineerName.toLowerCase().includes(lower) ||
-      o.status.toLowerCase().includes(lower) ||
-      o.priority.toLowerCase().includes(lower)
-    );
+  getOrderHistory(): Observable<Order[]> {
+    return this.apiService.get<Order[]>(API_CONFIG.EXTERNAL_APIS.ORDERS.HISTORY);
   }
 } 

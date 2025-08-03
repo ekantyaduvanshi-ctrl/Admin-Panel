@@ -7,8 +7,8 @@
     </div>
     <form (ngSubmit)="onSubmit($event)" autocomplete="off" class="flex-grow-0">
       <div class="mb-3">
-        <label for="email" class="form-label login-label">Email :</label>
-        <input id="email" name="email" type="email" class="form-control login-input" [(ngModel)]="email" required autocomplete="username">
+        <label for="username" class="form-label login-label">Username :</label>
+        <input id="username" name="username" type="text" class="form-control login-input" [(ngModel)]="username" required autocomplete="username">
       </div>
       <div class="mb-3">
         <label for="password" class="form-label login-label">Password :</label>
@@ -26,7 +26,7 @@
       </div>
     </form>
     <div class="text-center signup-row">
-      <span>Don’t have an account ?</span>
+      <span>Don't have an account ?</span>
       <a routerLink="/signup" class="signup-link">Sign Up</a> here.
     </div>
   </div>

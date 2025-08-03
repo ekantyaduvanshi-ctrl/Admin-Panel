@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
 // Register
 router.post('/register', async (req, res) => {
@@ -31,6 +32,51 @@ router.post('/login', async (req, res) => {
     res.json({ token, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// External API Proxy Login
+router.post('/loginV2', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    console.log('Proxying request to external API:', { username, password: '***' });
+    
+    // Call external API
+    const response = await axios.post('https://backend.cshare.in/v2/loginV2', {
+      username,
+      password
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      timeout: 30000 // 30 second timeout
+    });
+    
+    console.log('External API response received');
+    
+    // Return the external API response
+    res.json(response.data);
+  } catch (error) {
+    console.error('External API error:', error.response?.data || error.message);
+    
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      res.status(error.response.status).json({ 
+        error: error.response.data?.error || 'External API request failed' 
+      });
+    } else if (error.request) {
+      // The request was made but no response was received
+      res.status(500).json({ 
+        error: 'No response from external API. Please try again.' 
+      });
+    } else {
+      // Something happened in setting up the request
+      res.status(500).json({ 
+        error: 'Failed to connect to external API. Please try again.' 
+      });
+    }
   }
 });
 

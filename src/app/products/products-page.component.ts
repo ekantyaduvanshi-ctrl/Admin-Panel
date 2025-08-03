@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from './product.model';
 import { ProductService } from './product.service';
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './products-page.component.html',
   styleUrl: './products-page.component.css'
 })
-export class ProductsPageComponent {
+export class ProductsPageComponent implements OnInit {
   products: Product[] = [];
   cart: { [productId: number]: { product: Product, quantity: number } } = {};
   showAddressModal = false;
@@ -21,14 +21,20 @@ export class ProductsPageComponent {
   newProduct = { name: '', price: 0, category: '', imageUrl: '', status: 'Active' as 'Active', description: '' };
   showAddProductForm = false;
 
-  constructor(private productService: ProductService, private router: Router) {
-    this.products = this.productService.getProducts();
+  constructor(private productService: ProductService, private router: Router) {}
+
+  ngOnInit() {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+    });
   }
 
   addNewProduct() {
-    const newId = this.products.length ? Math.max(...this.products.map(p => p.id)) + 1 : 1;
-    const product: Product = {
-      id: newId,
+    const newProduct = {
       name: this.newProduct.name,
       price: +this.newProduct.price,
       category: this.newProduct.category,
@@ -37,11 +43,13 @@ export class ProductsPageComponent {
       description: this.newProduct.description,
       createdDate: new Date()
     };
-    this.products.unshift(product);
-    // Update localStorage
-    localStorage.setItem('products', JSON.stringify(this.products));
-    // Reset form
-    this.newProduct = { name: '', price: 0, category: '', imageUrl: '', status: 'Active' as 'Active', description: '' };
+    
+    this.productService.addProduct(newProduct).subscribe(() => {
+      this.loadProducts();
+      // Reset form
+      this.newProduct = { name: '', price: 0, category: '', imageUrl: '', status: 'Active' as 'Active', description: '' };
+      this.showAddProductForm = false;
+    });
   }
 
   toggleAddProductForm() {

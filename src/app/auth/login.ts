@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ["./login.css"]
 })
 export class LoginComponent {
-  email: string = '';
+  username: string = '';
   password: string = '';
   error: string = '';
   loading: boolean = false;
@@ -22,15 +22,15 @@ export class LoginComponent {
   onSubmit(event: Event) {
     event.preventDefault();
     
-    if (!this.email || !this.password) {
-      this.error = 'Please enter both email and password.';
+    if (!this.username || !this.password) {
+      this.error = 'Please enter both username and password.';
       return;
     }
 
     this.loading = true;
     this.error = '';
 
-    this.authService.login({ email: this.email, password: this.password })
+    this.authService.login({ username: this.username, password: this.password })
       .subscribe({
         next: () => {
           this.loading = false;

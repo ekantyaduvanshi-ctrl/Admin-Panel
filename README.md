@@ -1,62 +1,54 @@
-# 🏢 Admin Panel
+# Admin Panel - Full Stack Application
 
-A full-stack admin panel built with Angular frontend and Node.js/Express backend with MongoDB database.
+A comprehensive admin panel built with Angular frontend and Node.js backend, integrated with external APIs.
 
-## ✨ Features
+## 🚀 Features
 
-- **🔐 Authentication & Authorization**
-  - JWT-based authentication
-  - Role-based access control (Admin, User)
-  - Secure login/logout functionality
+- **User Management**: Create, update, delete, and manage users
+- **Product Management**: Manage product catalog with images and categories
+- **Order Management**: Track orders, assign engineers, and manage priorities
+- **Template Management**: Create and manage templates with filtering
+- **Authentication**: Secure login with JWT tokens
+- **Role-based Access**: Admin and user role management
+- **Responsive Design**: Modern UI that works on all devices
 
-- **👥 User Management**
-  - Create, read, update, delete users
-  - User role management
-  - User search and filtering
+## 🏗️ Architecture
 
-- **📦 Product Management**
-  - Complete CRUD operations for products
-  - Product categorization
-  - Inventory tracking
+### Frontend (Angular)
+- **Framework**: Angular 17
+- **UI**: Custom CSS with modern design
+- **State Management**: RxJS Observables
+- **API Integration**: HTTP Client with external APIs
 
-- **📋 Order Management**
-  - Order creation and tracking
-  - Order history
-  - Order status management
+### Backend (Node.js)
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT tokens
+- **Validation**: Custom validators
+- **Security**: Helmet, CORS, rate limiting
 
-- **🎨 Modern UI/UX**
-  - Responsive design
-  - Material Design components
-  - Intuitive navigation
+### External APIs
+- **Base URL**: `https://backend.cshare.in/v2`
+- **Company ID**: `65ca007ff956d27b357649bd`
+- **Authentication**: `/loginV2` (POST with username/password)
+- **Templates**: `/template/filter`, `/template/create`, `/template/update`
+- **Users**: `/users` (CRUD operations)
+- **Products**: `/products` (CRUD operations)
+- **Orders**: `/orders` (CRUD operations)
 
-## 🛠️ Tech Stack
-
-### Frontend
-- **Angular 17** - Modern web framework
-- **TypeScript** - Type-safe JavaScript
-- **Angular Material** - UI component library
-- **RxJS** - Reactive programming
-
-### Backend
-- **Node.js** - JavaScript runtime
-- **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **Mongoose** - MongoDB ODM
-- **JWT** - Authentication
-- **bcryptjs** - Password hashing
-
-## 🚀 Quick Start
+## 🛠️ Setup Instructions
 
 ### Prerequisites
 - Node.js (v16 or higher)
+- npm or yarn
 - MongoDB (local or cloud)
-- Git
+- Angular CLI
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <your-repo-url>
+   git clone <repository-url>
    cd admin-panel
    ```
 
@@ -68,147 +60,244 @@ A full-stack admin panel built with Angular frontend and Node.js/Express backend
    # Install backend dependencies
    cd backend
    npm install
+   cd ..
    ```
 
-3. **Environment Setup**
+3. **Configure environment**
    ```bash
-   # Copy environment file
+   # Copy environment example
    cd backend
    copy env.example .env
    ```
 
-4. **Database Setup**
-   ```bash
-   # Seed the database with sample data
-   cd backend
-   npm run seed
+4. **Update .env file**
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/admin_panel_db
+   JWT_SECRET=your_jwt_secret_here
+   CORS_ORIGIN=http://localhost:4200
+   NODE_ENV=development
    ```
 
-5. **Start Development Servers**
-   ```bash
-   # Start both frontend and backend
-   npm run dev
-   ```
+### Running the Application
 
-### Default Credentials
-```
-Email: admin@company.com
-Password: admin123
-```
-
-**Note:** The application now uses an external authentication API at `https://backend.cshare.in/v2/loginV2`
-
-## 📡 API Endpoints
-
-### Authentication
-- `POST https://backend.cshare.in/v2/loginV2` - User login (External API)
-- `POST /api/auth/register` - User registration
-
-### Templates
-- `GET https://backend.cshare.in/v2/template/filter` - Filter templates (External API)
-- `POST https://backend.cshare.in/v2/template/create` - Create template (External API)
-- `PUT https://backend.cshare.in/v2/template/update` - Update template (External API)
-- `GET /api/templates` - Get all templates
-- `GET /api/templates/:id` - Get template by ID
-- `DELETE /api/templates/:id` - Delete template
-
-### Users
-- `GET /api/users` - Get all users
-- `POST /api/users` - Create user
-- `GET /api/users/:id` - Get user by ID
-- `PUT /api/users/:id` - Update user
-- `DELETE /api/users/:id` - Delete user
-
-### Products
-- `GET /api/products` - Get all products
-- `POST /api/products` - Create product
-- `GET /api/products/:id` - Get product by ID
-- `PUT /api/products/:id` - Update product
-- `DELETE /api/products/:id` - Delete product
-
-### Orders
-- `GET /api/orders` - Get all orders
-- `POST /api/orders` - Create order
-- `GET /api/orders/:id` - Get order by ID
-- `PUT /api/orders/:id` - Update order
-- `DELETE /api/orders/:id` - Delete order
-- `GET /api/orders/myorders` - Get user's orders
-
-## 🔧 Development
-
-### Available Scripts
-
+#### Option 1: Start Both Servers (Recommended)
 ```bash
-# Development
-npm run dev          # Start both frontend and backend
-npm run start        # Start Angular development server
-npm run backend      # Start backend server
-
-# Backend only
-cd backend
-npm run dev          # Start backend with nodemon
-npm run seed         # Seed database with sample data
-
-# Frontend only
-npm run build        # Build for production
-npm run test         # Run tests
+start-servers.bat
 ```
 
-### Project Structure
+#### Option 2: Start Servers Separately
+
+**Backend Server:**
+```bash
+# Navigate to backend directory
+cd backend
+
+# Install dependencies (if not already done)
+npm install
+
+# Start development server
+npm run dev
+```
+
+**Frontend Server:**
+```bash
+# In a new terminal, from project root
+ng serve --open
+```
+
+## 🌐 API Endpoints
+
+### External APIs (Production)
+- **Base URL**: `https://backend.cshare.in/v2`
+- **Company ID**: `65ca007ff956d27b357649bd`
+- **Authentication**: `POST /loginV2`
+  - Headers: `Content-Type: application/json`
+  - Body: `{ "username": "adminCshare", "password": "adminCshare" }`
+- **Templates**: 
+  - `GET /template/filter` - Filter templates with query parameters
+  - `POST /template/create` - Create new template
+  - `PUT /template/update` - Update existing template
+  - Headers: `companyid`, `x-auth-token`
+- **Users**: `GET/POST/PUT/DELETE /users`
+- **Products**: `GET/POST/PUT/DELETE /products`
+- **Orders**: `GET/POST/PUT/DELETE /orders`
+
+### Local Backend APIs (Development)
+- **Base URL**: `http://localhost:5000/api`
+- **Authentication**: `POST /auth/loginV2`
+- **Users**: `GET/POST/PUT/DELETE /users`
+- **Products**: `GET/POST/PUT/DELETE /products`
+- **Orders**: `GET/POST/PUT/DELETE /orders`
+- **Templates**: `GET/POST/PUT/DELETE /templates`
+
+## 🔧 Configuration
+
+### Switching Between External and Local APIs
+
+The application can be configured to use either external APIs or local backend:
+
+```typescript
+// In src/app/core/api.service.ts
+private useExternalApis = true; // Set to false for local backend
+```
+
+### Authentication Headers
+
+**External APIs:**
+- `Content-Type: application/json`
+- `companyid: 65ca007ff956d27b357649bd`
+- `x-auth-token: <jwt_token>`
+
+**Local Backend:**
+- `Content-Type: application/json`
+- `Authorization: Bearer <jwt_token>`
+
+### Environment Variables
+
+**Backend (.env):**
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/admin_panel_db
+JWT_SECRET=your_secret_key
+CORS_ORIGIN=http://localhost:4200
+NODE_ENV=development
+```
+
+## 📁 Project Structure
+
 ```
 admin-panel/
+├── backend/                 # Node.js backend
+│   ├── models/             # MongoDB models
+│   ├── routes/             # API routes
+│   ├── middleware/         # Custom middleware
+│   ├── validators/         # Input validation
+│   └── server.js          # Main server file
 ├── src/                    # Angular frontend
 │   ├── app/
+│   │   ├── core/          # Core services and guards
 │   │   ├── auth/          # Authentication components
-│   │   ├── core/          # Core services & guards
 │   │   ├── dashboard/     # Dashboard component
-│   │   ├── orders/        # Order management
-│   │   ├── products/      # Product management
 │   │   ├── users/         # User management
+│   │   ├── products/      # Product management
+│   │   ├── orders/        # Order management
+│   │   ├── templates/     # Template management
 │   │   └── shared/        # Shared components
 │   └── assets/            # Static assets
-├── backend/               # Node.js backend
-│   ├── models/           # Database models
-│   ├── routes/           # API routes
-│   ├── middleware/       # Custom middleware
-│   ├── validators/       # Input validation
-│   └── server.js         # Main server file
-└── README.md
+├── start-servers.bat      # Startup script
+└── README.md             # This file
 ```
 
-## 🔐 Security Features
+## 🔐 Authentication
 
-- JWT token-based authentication
-- Password hashing with bcrypt
-- Role-based access control
-- CORS protection
-- Input validation
-- Helmet security headers
+The application uses JWT tokens for authentication:
 
-## 📱 Screenshots
+1. **Login**: `POST /loginV2` with username/password
+2. **Token Storage**: JWT stored in localStorage
+3. **Authorization**: Token sent in `x-auth-token` header for external APIs
+4. **Logout**: Token removed from localStorage
 
-- Login Page
-- Dashboard
-- User Management
-- Product Management
-- Order Management
+### Template API Examples
+
+**Create Template:**
+```json
+POST /template/create
+Headers: {
+  "Content-Type": "application/json",
+  "companyid": "65ca007ff956d27b357649bd",
+  "x-auth-token": "<jwt_token>"
+}
+Body: {
+  "name": "Template Name",
+  "heading": "Template Heading",
+  "description": "Template Description"
+}
+```
+
+**Update Template:**
+```json
+PUT /template/update
+Headers: {
+  "Content-Type": "application/json",
+  "companyid": "65ca007ff956d27b357649bd",
+  "x-auth-token": "<jwt_token>"
+}
+Body: {
+  "id": "template_id",
+  "name": "Updated Name",
+  "heading": "Updated Heading",
+  "description": "Updated Description"
+}
+```
+
+**Filter Templates:**
+```json
+GET /template/filter?template_types=&from=&to
+Headers: {
+  "companyid": "65ca007ff956d27b357649bd",
+  "x-auth-token": "<jwt_token>"
+}
+```
+
+## 🎨 UI Components
+
+- **Header**: Navigation and user menu
+- **Sidebar**: Module navigation
+- **Dashboard**: Overview and statistics
+- **Forms**: User, product, order, and template forms
+- **Tables**: Data display with sorting and filtering
+- **Modals**: Confirmation dialogs
+
+## 🚀 Deployment
+
+### Frontend Deployment
+```bash
+# Build for production
+ng build --configuration production
+
+# Deploy to static hosting (Netlify, Vercel, etc.)
+```
+
+### Backend Deployment
+```bash
+# Install production dependencies
+npm install --production
+
+# Start production server
+npm start
+```
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+1. **CORS Errors**: Ensure CORS_ORIGIN is set correctly in backend .env
+2. **MongoDB Connection**: Check MONGO_URI in backend .env
+3. **Port Conflicts**: Change PORT in backend .env if 5000 is in use
+4. **API Errors**: Check external API availability and credentials
+5. **Authentication**: Verify JWT token is valid and not expired
+
+### Development Tips
+
+- Use browser dev tools to monitor API calls
+- Check backend console for server logs
+- Verify MongoDB connection in backend logs
+- Test external APIs independently
+- Check network tab for API request/response details
+
+## 📝 License
+
+This project is licensed under the MIT License.
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-## 📄 License
+## 📞 Support
 
-This project is licensed under the MIT License.
-
-## 🆘 Support
-
-If you encounter any issues or have questions, please open an issue on GitHub.
-
----
-
-**Built with ❤️ using Angular & Node.js**
+For support and questions, please contact the development team.

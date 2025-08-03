@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from './users/user.service';
 import { ProductService } from './products/product.service';
 import { OrderService } from './orders/order.service';
@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angul
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css'
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
   isSuperAdmin = false;
   user: any = null;
   sidebarOpen = true;
@@ -83,10 +83,10 @@ export class Dashboard {
   }
 
   loadProducts() {
-    // Force reset to default products to ensure all 10 are available
-    this.productService.resetToDefaultProducts();
-    this.products = this.productService.getProducts();
-    console.log('Loaded products:', this.products.length);
+    this.productService.getProducts().subscribe(products => {
+      this.products = products;
+      console.log('Loaded products:', this.products.length);
+    });
   }
 
   logout() {
@@ -99,25 +99,28 @@ export class Dashboard {
       this.stats.totalUsers = users.length;
     });
     
-    const products = this.productService.getProducts();
-    this.stats.totalProducts = products.length;
+    this.productService.getProducts().subscribe(products => {
+      this.stats.totalProducts = products.length;
+    });
     
-    const orders = this.orderService.getOrders();
-    this.stats.totalOrders = orders.length;
-    this.stats.pendingOrders = orders.filter((o: any) => o.status === 'Pending').length;
-    if (!this.isSuperAdmin && this.currentEngineerId !== null) {
-      this.stats.myOrders = orders.filter((o: any) => o.assignedEngineerId === this.currentEngineerId).length;
-      this.stats.completedOrders = orders.filter((o: any) => o.assignedEngineerId === this.currentEngineerId && o.status === 'Completed').length;
-    }
+    this.orderService.getOrders().subscribe(orders => {
+      this.stats.totalOrders = orders.length;
+      this.stats.pendingOrders = orders.filter((o: any) => o.status === 'Pending').length;
+      if (!this.isSuperAdmin && this.currentEngineerId !== null) {
+        this.stats.myOrders = orders.filter((o: any) => o.assignedEngineerId === this.currentEngineerId).length;
+        this.stats.completedOrders = orders.filter((o: any) => o.assignedEngineerId === this.currentEngineerId && o.status === 'Completed').length;
+      }
+    });
   }
 
   loadRecentOrders() {
-    const orders = this.orderService.getOrders();
-    let filtered = orders;
-    if (!this.isSuperAdmin && this.currentEngineerId !== null) {
-      filtered = orders.filter(o => o.assignedEngineerId === this.currentEngineerId);
-    }
-    this.recentOrders = filtered.sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()).slice(0, 5);
+    this.orderService.getOrders().subscribe(orders => {
+      let filtered = orders;
+      if (!this.isSuperAdmin && this.currentEngineerId !== null) {
+        filtered = orders.filter((o: any) => o.assignedEngineerId === this.currentEngineerId);
+      }
+      this.recentOrders = filtered.sort((a: any, b: any) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()).slice(0, 5);
+    });
   }
 
   addUser() {
@@ -148,10 +151,11 @@ export class Dashboard {
 
   onSearch() {
     // Implement search logic for orders
-    const orders = this.orderService.getOrders();
-    this.filteredOrders = orders.filter(order =>
-      order.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.orderService.getOrders().subscribe(orders => {
+      this.filteredOrders = orders.filter((order: any) =>
+        order.productName.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    });
   }
 
   updateStatus(order: any) {

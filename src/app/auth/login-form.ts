@@ -3,17 +3,18 @@ import { AuthService } from "../core/auth.service";
 import { Router } from '@angular/router';
 import { SharedModule } from "../shared/shared-module";
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: "app-login-form",
   standalone: true,
-  imports: [SharedModule, CommonModule],
+  imports: [SharedModule, CommonModule, RouterModule],
   templateUrl: "./login-form.html",
   styleUrls: ["./login-form.css"]
 })
 export class LoginFormComponent {
-  email: string = '';
-  password: string = '';
+  username: string = 'adminCshare';
+  password: string = 'adminCshare';
   error: string = '';
   loading: boolean = false;
 
@@ -22,15 +23,15 @@ export class LoginFormComponent {
   onSubmit(event: Event) {
     event.preventDefault();
     
-    if (!this.email || !this.password) {
-      this.error = 'Please enter both email and password.';
+    if (!this.username || !this.password) {
+      this.error = 'Please enter both username and password.';
       return;
     }
 
     this.loading = true;
     this.error = '';
 
-    this.authService.login({ email: this.email, password: this.password })
+    this.authService.login({ username: this.username, password: this.password })
       .subscribe({
         next: () => {
           this.loading = false;

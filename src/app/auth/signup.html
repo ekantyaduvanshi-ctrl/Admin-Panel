@@ -1,33 +1,43 @@
-<div class="container min-vh-100 d-flex align-items-center justify-content-center bg-light">
-  <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-    <div class="card shadow border-0">
-      <div class="card-body p-4">
-        <h2 class="card-title text-center mb-2">Sign Up</h2>
-        <p class="text-center text-muted mb-4">Create your admin panel account</p>
-        <form (ngSubmit)="onSubmit($event)" autocomplete="off">
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input id="name" name="name" type="text" class="form-control" [(ngModel)]="name" required>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input id="email" name="email" type="email" class="form-control" [(ngModel)]="email" required>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input id="password" name="password" type="password" class="form-control" [(ngModel)]="password" required>
-          </div>
-          <div *ngIf="error" class="alert alert-danger py-1 text-center">{{ error }}</div>
-          <div *ngIf="success" class="alert alert-success py-1 text-center">{{ success }}</div>
-          <button type="submit" class="btn btn-primary w-100 mt-2">Sign Up</button>
-        </form>
+<div class="signup-bg d-flex align-items-center justify-content-center min-vh-100">
+  <div class="signup-card position-relative d-flex flex-column">
+    <div class="avatar-container-overlap">
+      <div class="avatar-icon-overlap">
+        <i class="fas fa-user"></i>
       </div>
     </div>
+    <form (ngSubmit)="onSubmit($event)" autocomplete="off" class="flex-grow-0">
+      <div class="mb-3">
+        <label for="name" class="form-label signup-label">Name :</label>
+        <input id="name" name="name" type="text" class="form-control signup-input" [(ngModel)]="name" placeholder="Name" required>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label signup-label">Phone :</label>
+        <input id="phone" name="phone" type="tel" class="form-control signup-input" [(ngModel)]="phone" placeholder="Phone" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label signup-label">Email :</label>
+        <input id="email" name="email" type="email" class="form-control signup-input" [(ngModel)]="email" placeholder="Email" required>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label signup-label">Password :</label>
+        <input id="password" name="password" type="password" class="form-control signup-input" [(ngModel)]="password" placeholder="Password" required>
+      </div>
+      <div class="mb-3">
+        <label for="confirmPassword" class="form-label signup-label">Confirm Password :</label>
+        <input id="confirmPassword" name="confirmPassword" type="password" class="form-control signup-input" [(ngModel)]="confirmPassword" placeholder="Confirm Password" required>
+      </div>
+      <div *ngIf="error" class="alert alert-danger py-1 text-center">{{ error }}</div>
+      <div *ngIf="success" class="alert alert-success py-1 text-center">{{ success }}</div>
+      <div class="d-flex justify-content-center">
+        <button type="submit" class="btn signup-btn mt-2 px-5" [disabled]="loading">
+          <span *ngIf="!loading">Sign Up</span>
+          <span *ngIf="loading">Signing up...</span>
+        </button>
+      </div>
+    </form>
+    <div class="text-center login-row">
+      <span>Already have an account ?</span>
+      <a routerLink="/login" class="login-link">Login</a> here.
+    </div>
   </div>
-</div>
-<footer class="auth-footer fixed-bottom bg-white border-top py-3">
-  <div class="container text-center">
-    <span>Already have an account?</span>
-    <a routerLink="/login" class="ms-2">Login</a>
-  </div>
-</footer> 
+</div> 
